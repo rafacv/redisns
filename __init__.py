@@ -69,3 +69,9 @@ class Redisns(object):
         missing_method.__name__ = self._db.__getattribute__(attr).__name__
         missing_method.__dict__ = self._db.__getattribute__(attr).__dict__
         return missing_method
+    def __getitem__(self, attr):
+        return self.get(attr)
+    def __setitem__(self, attr, value):
+        return self.set(attr, value)
+    def __delitem__(self, attr):
+        return self.delete(attr)

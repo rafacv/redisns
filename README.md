@@ -14,10 +14,10 @@ Inspired by [redis-namespace](http://github.com/defunkt/redis-namespace/) from C
 
 Would be translated into:
 
-  >>> db.set("MyApp::v1:user1", "John Doe")
-  'OK'
-  >>> print db.get("MyApp::v1:user")
-  u'John Doe'
+    >>> db.set("MyApp::v1:user1", "John Doe")
+    'OK'
+    >>> print db.get("MyApp::v1:user")
+    u'John Doe'
 
 # author
 

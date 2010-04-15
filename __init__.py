@@ -1,4 +1,5 @@
-from redis import *
+from functools import wraps
+from redis import Redis
 
 class Redisns(object):
     key_commands = [
@@ -57,6 +58,9 @@ class Redisns(object):
         self.namespace = namespace
         self._db = Redis(*args, **kwargs)
     def __getattr__(self, attr):
+        if not hasattr(self._db):
+            raise AttributeError("'Redis' class has no attribute '%s'" % attr)
+        @wraps(self._db.__getattribute__(attr))
         def missing_method(*args, **kwargs):
             args = list(args)
             if attr in Redisns.key_commands:
@@ -65,9 +69,6 @@ class Redisns(object):
                 for arg in range(len(args)):
                     args[arg] = "{0}{1}".format(self.namespace, args[arg])
             return self._db.__getattribute__(attr)(*args, **kwargs)
-        missing_method.__doc__ = self._db.__getattribute__(attr).__doc__
-        missing_method.__name__ = self._db.__getattribute__(attr).__name__
-        missing_method.__dict__ = self._db.__getattribute__(attr).__dict__
         return missing_method
     def __getitem__(self, attr):
         return self.get(attr)

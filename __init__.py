@@ -58,7 +58,7 @@ class Redisns(object):
         self.namespace = namespace
         self._db = Redis(*args, **kwargs)
     def __getattr__(self, attr):
-        if not hasattr(self._db):
+        if not hasattr(self._db, attr):
             raise AttributeError("'Redis' class has no attribute '%s'" % attr)
         @wraps(self._db.__getattribute__(attr))
         def missing_method(*args, **kwargs):
